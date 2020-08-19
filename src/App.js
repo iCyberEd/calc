@@ -73,9 +73,16 @@ function Calc() {
     numberInput.current.focus()
   }
 
-  let calculations = () => {
+  const calculations = () => {
     setNumber(calculated)
     setInfo("")
+    numberInput.current.focus()
+  }
+
+  const reset = () => {
+    setNumber("")
+    setInfo("")
+    calcSign = "+"
     numberInput.current.focus()
   }
 
@@ -93,7 +100,7 @@ function Calc() {
             <input type="button" value="-" className="col" onClick={subtraction} />
             <input type="button" value="*" className="col" onClick={multiplication} />
             <input type="button" value="/" className="col" onClick={division} />
-            <input type="button" value="c" className="col"  />
+            <input type="button" value="c" className="col" onClick={reset} />
           </div>
           <div className="col-sm-4 p-0">
             <input type="button" value="=" className="equal col-12" onClick={calculations} />
