@@ -1,0 +1,48 @@
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+form {
+  min-width: 100px;
+  max-width: 300px;
+  margin: 200px auto;
+  padding: 20px;
+  border-radius: 10px;
+}
+
+/* Chrome, Safari, Edge, Opera hide arrows on input t=number */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+}
+
+/* Firefox hide arrows on input t=number */
+input[type=number] {
+  -moz-appearance: textfield;
+  text-align: right;
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+
+.equal {
+  height: 100%;
+}
+
+.calculations {
+  width: 100%;
+}
+
+.info {
+  height: 15px;
+}
