@@ -1,1 +1,0 @@
-React + Bootstrap calculator
