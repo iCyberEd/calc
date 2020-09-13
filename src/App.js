@@ -1,42 +1,65 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef} from 'react';
+
 
 function Calc() {
 
-  let calcSign = "+"
-
+  let [calcSign, setCalcSign] = useState("+")
   let [info, setInfo]= useState("")
   let [number, setNumber] = useState("")
   let [calculated, setCalculated] = useState(0)
 
   const numberInput = useRef(null)
 
+  const checkCorrectNumber = (e) => {
+    let value = e.target.value
+    let reg = /[^0-9+-.]/ // check for invalid characters
+    if( value.search(reg) >= 0 ){
+      return false
+    }
+    if( value.includes("-", 1) || value.includes("+", 1) ){ // checking for the presence of the signs + and - inside numbers
+     return false
+    }
+    if( (value.split(".").length + value.split(",").length) > 3 ){ // checking for more than 1 dot or comma
+     return false
+    }
+    if (typeof +value != 'number'){
+      return false
+    }
+    
+    setNumber(value)
+    
+  }
+
   const prevCalc = () => {
+    let prevCalculated = 0
+
     switch (calcSign){
       case "+":
-        setCalculated(calculated + +number)
+        prevCalculated = calculated + +number
         break
       case "-":
-        setCalculated(calculated - +number)
+        prevCalculated = calculated - +number
         break
       case "/":
-        setCalculated(calculated / +number)
+        prevCalculated = calculated / +number
         break
       case "*":
-        setCalculated(calculated * +number)
+        prevCalculated = calculated * +number
         break
       default:
         break
     }
+
+    return prevCalculated
   }
 
   const addition = () => {
     if (number === ""){
       return
     }
-    prevCalc()
-    setInfo(info + number + "+")
+    setCalculated(prevCalc())
     setNumber("")
-    calcSign = "+"
+    setCalcSign("+")
     numberInput.current.focus()
   }
 
@@ -44,10 +67,9 @@ function Calc() {
     if (number === ""){
       return
     }
-    prevCalc()
-    setInfo(info + number + "-")
+    setCalculated(prevCalc())
     setNumber("")
-    calcSign = "-"
+    setCalcSign("-")
     numberInput.current.focus()
   }
 
@@ -55,7 +77,7 @@ function Calc() {
     if (number === ""){
       return
     }
-    prevCalc()
+    setCalculated(prevCalc())
     setInfo(info + number + "/")
     setNumber("")
     calcSign = "/"
@@ -66,7 +88,7 @@ function Calc() {
     if (number === ""){
       return
     }
-    prevCalc()
+    setCalculated(prevCalc())
     setInfo(info + number + "*")
     setNumber("")
     calcSign = "*"
@@ -74,8 +96,10 @@ function Calc() {
   }
 
   const calculations = () => {
-    setNumber(calculated)
-    setInfo("")
+    //console.log(calculated)
+  
+    setNumber(prevCalc())
+    setCalculated(0)
     numberInput.current.focus()
   }
 
@@ -88,23 +112,28 @@ function Calc() {
 
 
   return (
-    <div className="App container">
-      <form className="form-group bg-dark">
-       <div className="row">
-        <div className="info input-number col-12 p-0 text-info p-0 mb-2" value={info} >{info}</div>
-        <input type="number" className="input-number col-12 p-0" value={number} onChange={ (e)=>{setNumber(e.target.value)} } ref={numberInput} autoFocus/>
+    <div className="App ">
+      <form className="form-group bg-dark" >
+        <div className="container p-0">
+        <div className="row m-0 p-0">
+          <div className="info col-12 text-info p-0 mb-1" >{calculated + calcSign}</div>
         </div>
-        <div className="btns row">
+        <div className="row m-0 p-0">
+          <input type="text" className="input-number col-12 mb-1" value={number} onChange={ (e)=>checkCorrectNumber(e) } ref={numberInput} autoFocus data-testid="test-input-number"/>
+        </div>
+        
+        <div className="btns row m-0 p-0">
           <div className="calculations d-inline-flex flex-wrap justify-content-between col-12 col-sm-8 p-0">
             <input type="button" value="+" className="col" onClick={addition} />
             <input type="button" value="-" className="col" onClick={subtraction} />
             <input type="button" value="*" className="col" onClick={multiplication} />
             <input type="button" value="/" className="col" onClick={division} />
-            <input type="button" value="c" className="col" onClick={reset} />
+            <input type="button" value="C" className="col font-weight-bold" onClick={reset} />
           </div>
           <div className="col-sm-4 p-0">
             <input type="button" value="=" className="equal col-12" onClick={calculations} />
           </div>
+        </div>
         </div>
       </form>
     </div>
